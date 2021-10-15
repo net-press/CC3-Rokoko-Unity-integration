@@ -16,6 +16,7 @@ This classe overrides the one from https://github.com/Rokoko/rokoko-studio-live-
 - *protected virtual void Start...*
 - *public virtual void UpdateFace...*
 
+##
 
 #### Authors
 These script were developed by Game Maker Academy (Italy) while experimenting the best practices and refining the pipeline for using characters from Character Creator 3 (Reallusion) and Rokoko face capture system insede the Unity game engine
