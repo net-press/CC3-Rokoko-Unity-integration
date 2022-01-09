@@ -7,14 +7,20 @@ A few scripts to use 3D characters made with Reallusion Character Creator 3 alon
 
 ## Usage
 
-#### EyeBones.cs
-Just add the script to CC_Base_Body in your CC3+ character and link the CC_Base_L_Eye and CC_Base_R_Eye transform in the inspector. This script uses eight different blendshapes (A06_Eye_Look_Up_Lef [...] A13_Eye_Look_Out_Right) to rotate the yes according to the blendshape values. Remeber you need to remap your Rokoko animations using this tool: https://github.com/chr33z/unity-blendshape-mapper
+#### RotateBonesByBlendhsapes.cs
+Just add the script to CC_Base_Body in your CC3+ character and link the CC_Base_L_Eye, CC_Base_R_Eye and CC_Base_Jawroot transforms in the inspector. This script uses twelve different blendshapes to rotate eyes and jaw according to the blendshape values. Remeber you need to remap your Rokoko animations using this tool: https://github.com/chr33z/unity-blendshape-mapper
 
 #### CC3Face.cs
-This classe overrides the one from https://github.com/Rokoko/rokoko-studio-live-unity to remap blendshape names without the need to manually type blendshape mapping. Add this script instead fo Face.cs to CC_Base_Body and follow the guidelines from Rokoko.
+This class overrides the one from https://github.com/Rokoko/rokoko-studio-live-unity to remap blendshape names without the need to manually type blendshape mapping. Add this script instead fo Face.cs to CC_Base_Body and follow the guidelines from Rokoko.
 > Note: you need to edit the parent Face class to allow overriding of the Start and UpdateFace methods. 
 - *protected virtual void Start...*
 - *public virtual void UpdateFace...*
+
+### CopyBlendshapes.cs
+This class copies blendshape values from a source SkinnedMeshRenderer to a second one. Useful if you have secondary meshes like eyebrows or beard that need to be animated indipendently
+
+### BlendshapeEmphasis.cs
+This class lets you fine tune the sensitivity of your blendshape animations on a given charater. 
 
 ##
 
