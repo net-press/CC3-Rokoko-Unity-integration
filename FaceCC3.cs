@@ -7,12 +7,19 @@ using Rokoko.Core;
 
 public class FaceCC3 : Face {
 
-    public float mouthEmphasis = 1;
+
+    [Header("Expression tuning")]
     public float browEmphasis = 1;
+    public float eyesEmphasis = 1;
     public float cheekEmphasis = 1;
     public float noseEmphasis = 1;
+    public float mouthEmphasis = 1;
 
     SkinnedMeshRenderer smr;
+
+    [Tooltip("If your characters have a beard or bushy eyebrows that can be animamated through blendshapes add a Face Script and link them here")]
+    [Header("Other settings")]
+    public Face[] secondaryFaces;
 
      public enum CC3BlendShapeNames {
         A01_Brow_Inner_Up, 
@@ -73,7 +80,9 @@ public class FaceCC3 : Face {
     Dictionary<CC3BlendShapeNames, int> CC3BlendShapeNamesDict;
 
     protected override void Start() {
+
         smr = GetComponent<SkinnedMeshRenderer>();
+        if (smr == null) Debug.Log("Skinned Mesh Renderer component not found");
 
         // Find the blendshape index for each given blendshape name
         CC3BlendShapeNamesDict = new Dictionary<CC3BlendShapeNames, int>();
@@ -98,12 +107,12 @@ public class FaceCC3 : Face {
         smr.SetBlendShapeWeight(CC3BlendShapeNamesDict[CC3BlendShapeNames.A11_Eye_Look_In_Left], faceFrame.eyeLookInLeft);
         smr.SetBlendShapeWeight(CC3BlendShapeNamesDict[CC3BlendShapeNames.A12_Eye_Look_In_Right], faceFrame.eyeLookInRight);
         smr.SetBlendShapeWeight(CC3BlendShapeNamesDict[CC3BlendShapeNames.A13_Eye_Look_Out_Right], faceFrame.eyeLookOutRight);
-        smr.SetBlendShapeWeight(CC3BlendShapeNamesDict[CC3BlendShapeNames.A14_Eye_Blink_Left], faceFrame.eyeBlinkLeft);
-        smr.SetBlendShapeWeight(CC3BlendShapeNamesDict[CC3BlendShapeNames.A15_Eye_Blink_Right], faceFrame.eyeBlinkRight);
-        smr.SetBlendShapeWeight(CC3BlendShapeNamesDict[CC3BlendShapeNames.A16_Eye_Squint_Left], faceFrame.eyeSquintLeft);
-        smr.SetBlendShapeWeight(CC3BlendShapeNamesDict[CC3BlendShapeNames.A17_Eye_Squint_Right], faceFrame.eyeSquintRight);
-        smr.SetBlendShapeWeight(CC3BlendShapeNamesDict[CC3BlendShapeNames.A18_Eye_Wide_Left], faceFrame.eyeWideLeft);
-        smr.SetBlendShapeWeight(CC3BlendShapeNamesDict[CC3BlendShapeNames.A19_Eye_Wide_Right], faceFrame.eyeWideRight);
+        smr.SetBlendShapeWeight(CC3BlendShapeNamesDict[CC3BlendShapeNames.A14_Eye_Blink_Left], faceFrame.eyeBlinkLeft * eyesEmphasis);
+        smr.SetBlendShapeWeight(CC3BlendShapeNamesDict[CC3BlendShapeNames.A15_Eye_Blink_Right], faceFrame.eyeBlinkRight * eyesEmphasis);
+        smr.SetBlendShapeWeight(CC3BlendShapeNamesDict[CC3BlendShapeNames.A16_Eye_Squint_Left], faceFrame.eyeSquintLeft * eyesEmphasis);
+        smr.SetBlendShapeWeight(CC3BlendShapeNamesDict[CC3BlendShapeNames.A17_Eye_Squint_Right], faceFrame.eyeSquintRight * eyesEmphasis);
+        smr.SetBlendShapeWeight(CC3BlendShapeNamesDict[CC3BlendShapeNames.A18_Eye_Wide_Left], faceFrame.eyeWideLeft * eyesEmphasis);
+        smr.SetBlendShapeWeight(CC3BlendShapeNamesDict[CC3BlendShapeNames.A19_Eye_Wide_Right], faceFrame.eyeWideRight * eyesEmphasis);
         smr.SetBlendShapeWeight(CC3BlendShapeNamesDict[CC3BlendShapeNames.A20_Cheek_Puff], faceFrame.cheekPuff * cheekEmphasis);
         smr.SetBlendShapeWeight(CC3BlendShapeNamesDict[CC3BlendShapeNames.A21_Cheek_Squint_Left], faceFrame.cheekSquintLeft * cheekEmphasis);
         smr.SetBlendShapeWeight(CC3BlendShapeNamesDict[CC3BlendShapeNames.A22_Cheek_Squint_Right], faceFrame.cheekSquintRight * cheekEmphasis);
@@ -138,5 +147,11 @@ public class FaceCC3 : Face {
         smr.SetBlendShapeWeight(CC3BlendShapeNamesDict[CC3BlendShapeNames.A51_Mouth_Stretch_Right], faceFrame.mouthStretchRight * mouthEmphasis);
         smr.SetBlendShapeWeight(CC3BlendShapeNamesDict[CC3BlendShapeNames.A52_Tongue_Out], faceFrame.tongueOut * mouthEmphasis);
         smr.SetBlendShapeWeight(CC3BlendShapeNamesDict[CC3BlendShapeNames.Merged_Open_Mouth], faceFrame.jawOpen * mouthEmphasis);
+
+        if (secondaryFaces.Length > 0) {
+            foreach (Face face in secondaryFaces) {
+                face.UpdateFace(faceFrame);
+			}
+		}
     }
 }
